@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)https://www.17sucai.com/preview/800544/2019-03-28/unicode/demo.html -->
+<html lang="zh-CN">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Unicode转码</title>
+	<style>
+		div,
+		body,
+		html {
+			margin: 0;
+			padding: 0;
+			user-select: none;
+		}
+
+		.unicode-input,
+		.unicode-output {
+			width: calc(50% - 24px);
+			margin: 10px;
+			height: 200px;
+			padding: 15px 16px;
+			border-radius: 15px;
+			border: 1px solid #ededed;
+			outline: none;
+			box-sizing: border-box;
+			word-break: break-all;
+			overflow-x: hidden;
+			overflow-y: auto;
+			display: inline-block;
+			user-select: text;
+		}
+
+		.unicode-input:focus {
+			border: 1px solid #57a5ff;
+			box-shadow: 0 0 -1px 2px #2137f8;
+		}
+
+		.unicode-input:empty:before,
+		.unicode-output:empty:before {
+			color: #d4d4d4;
+			content: attr(placeholder)
+		}
+
+		@media screen and (max-width:750px) {
+
+			.unicode-input,
+			.unicode-output {
+				width: calc(100% - 20px);
+			}
+		}
+
+		.set-unicode-btn,
+		.get-unicode-btn {
+			display: inline-block;
+			max-width: 150px;
+			height: 35px;
+			border-radius: 3px;
+			padding: 4px 8px;
+			background-color: #4d4d4d;
+			margin: 10px;
+			text-align: center;
+			line-height: 35px;
+			font-size: 18px;
+			color: #ffffff;
+			cursor: pointer;
+			transition: background-color .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		}
+
+		.set-unicode-btn:hover,
+		.set-unicode-btn:active,
+		.get-unicode-btn:hover,
+		.get-unicode-btn:active {
+			background-color: #2391df;
+		}
+
+		::-webkit-scrollbar {
+			width: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Unicode转码</h1>
+	<div class="unicode-input" id="unicodeInput" contenteditable="true" placeholder="请输入需要编码的中文字符"></div>
+	<div class="unicode-output" id="unicodeOutput" tabindex="1" placeholder="编码结果"></div>
+	<div class="set-unicode-btn" id="setUnicode">编码</div>
+	<div class="get-unicode-btn" id="getUnicode">解码</div>
+
+	<!--js部分-->
+	<script type="text/javascript">
+		function $(e) {
+			return document.getElementById(e);
+		}
+		$('setUnicode').onclick = function () {
+			setUnicode();
+		}
+		$('getUnicode').onclick = function () {
+			getUnicode();
+		}
+
+		function setUnicode() {
+			var in_val = $('unicodeInput').textContent;
+			var in_str = '';
+			if (in_val) {
+				for (var i = 0, len = in_val.length; i < len; i++) {
+					in_str += '#-#' + in_val[i].charCodeAt(0).toString(16);
+				}
+				$('unicodeOutput').textContent = in_str;
+			}
+		}
+
+		function getUnicode() {
+			var out_val = $('unicodeInput').textContent;
+			if (out_val && out_val.indexOf('#-#') !== -1) {
+				var valArr = out_val.split('#-#'),
+					result = '';
+				for (var j = 0, length = valArr.length; j < length; j++) {
+					result += String.fromCharCode(parseInt(valArr[j], 16));
+				}
+				//如果不截取，则会出现空白字符，如何也消除不了
+				$('unicodeOutput').textContent = result.slice(1);
+			} else {
+				alert('不是unicode字符，无需解码!')
+			}
+		}
+	</script>
+
+
+</body>
+
+</html>
